@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "gpt-vs-gemini-chess"
+version = "0.1.0"
+description = "Chess game between agents powered by gpt and gemini"
+authors = ["taimoor0217"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+langchain = "^0.1.17"
+langchainhub = "^0.1.15"
+langchain-community = "^0.0.37"
+langchain-openai = "^0.1.6"
+langchain-core = "^0.1.52"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
