@@ -36,6 +36,7 @@ function handleJoinGame(userName: string, gameId: string): Promise<Response> {
   if (game.white !== "" && game.black !== "") {
     game.canPlay = true;
   }
+  console.log(`${userName} joined as ${color}`)
   return Promise.resolve(
     new Response(JSON.stringify({ gameId, color }), { status: 200 }),
   );
@@ -70,7 +71,7 @@ function handleMakeMove(
 ): Promise<Response> {
   const game = games.get(gameId);
   if (!game) {
-    return Promise.resolve(new Response("Game not found", { status: 404 }));
+    return Promise.resolve(new Response(JSON.stringify({message: "Invalid game"}), { status: 404 }));
   }
   const { chess, white, black } = game;
   const gameState = chess.getStatus();
@@ -78,16 +79,16 @@ function handleMakeMove(
     (gameState.turn === "white" && userName !== white) ||
     (gameState.turn === "black" && userName !== black)
   ) {
-    return Promise.resolve(new Response("Not your turn", { status: 400 }));
+    return Promise.resolve(new Response(JSON.stringify({message: "Not your turn"}), { status: 400 }));
   }
   const result = chess.move(move);
   if (!result) {
-    return Promise.resolve(new Response("Invalid move", { status: 400 }));
+    return Promise.resolve(new Response(JSON.stringify({message:"Invalid move, check the board state and confirm you are making the right move?"}), { status: 400 }));
   }
   if (message) {
     game.chat.push(`${userName}: ${message}`);
   }
-  return Promise.resolve(new Response("", { status: 200 }));
+  return Promise.resolve(new Response(JSON.stringify({message: "Move processed successfully"}), { status: 200 }));
 }
 
 function handleGetCurrentTurn(gameId: string): Promise<Response> {
@@ -134,7 +135,7 @@ function handleGetLatestMove(gameId: string): Promise<Response> {
 const handler = async (req: Request) => {
   const url = new URL(req.url);
   const gameId = url.searchParams.get("gameId");
-
+  console.log(url.pathname, gameId);
   if (!gameId) {
     return Promise.resolve(
       new Response("gameId parameter is missing", { status: 400 }),
@@ -169,9 +170,11 @@ const handler = async (req: Request) => {
       return await handleGetLatestMove(gameId);
     }
     default: {
+      console.log("404 req came in");
       return new Response("Not found", { status: 404 });
     }
   }
 };
 handleCreateGame("UltimateBattle");
 serve(handler, { port: 8008 });
+
