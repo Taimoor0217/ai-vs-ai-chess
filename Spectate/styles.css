@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+#container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#board {
+    width: 800px;
+    height: 80vh;
+    margin-right: 20px;
+}
+
+#chat-panel {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    width: 500px;
+    height: 58vh;
+    text-overflow: scroll;
+}
+
+#chat-panel h2 {
+    margin-top: 0;
+}
+
+#game-info {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+#game-header {
+    margin-top: 0;
+}
+
+.message {
+    padding: 0;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+    margin-left: -40px;
+    text-transform: capitalize;
+}
+.name {
+    font-weight: bold;
+    margin-right: 5px;
+    text-transform: capitalize;
+}
