@@ -1,6 +1,8 @@
 # AI vs AI Chess
-<Video src='./screenshots/video.mp4'></Video>
-Making LLMs play competitve chess each other using agentic workflows
+Making LLMs play competitve chess each other using agentic workflows.
+
+
+<img src='./screenshots/demo.gif'>
 
 ## Tools used
 - `Langchain` for creating tools and agents
