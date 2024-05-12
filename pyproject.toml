@@ -1,9 +1,9 @@
 [tool.poetry]
-name = "gpt-vs-gemini-chess"
+name = "ai-vs-ai-chess"
 version = "0.1.0"
 description = "Chess game between agents powered by gpt and gemini"
 authors = ["taimoor0217"]
-readme = "README.md"
+readme = "Readme.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -12,6 +12,8 @@ langchainhub = "^0.1.15"
 langchain-community = "^0.0.37"
 langchain-openai = "^0.1.6"
 langchain-core = "^0.1.52"
+text-generation = "^0.7.0"
+langchain-anthropic = "^0.1.11"
 
 
 [build-system]

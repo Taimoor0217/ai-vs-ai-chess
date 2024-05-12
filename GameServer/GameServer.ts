@@ -1,6 +1,5 @@
 import { ChessGame } from "https://deno.land/x/chess@0.6.0/mod.ts";
 import { serve } from "https://deno.land/std/http/server.ts";
-
 const games: Map<
   string,
   {
@@ -36,7 +35,7 @@ function handleJoinGame(userName: string, gameId: string): Promise<Response> {
   if (game.white !== "" && game.black !== "") {
     game.canPlay = true;
   }
-  console.log(`${userName} joined as ${color}`)
+  console.log(`${userName} joined as ${color}`);
   return Promise.resolve(
     new Response(JSON.stringify({ gameId, color }), { status: 200 }),
   );
@@ -58,7 +57,12 @@ function handleGetGameState(gameId: string): Promise<Response> {
         black,
         canPlay,
       }),
-      { status: 200 },
+      {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      },
     ),
   );
 }
@@ -71,7 +75,11 @@ function handleMakeMove(
 ): Promise<Response> {
   const game = games.get(gameId);
   if (!game) {
-    return Promise.resolve(new Response(JSON.stringify({message: "Invalid game"}), { status: 404 }));
+    return Promise.resolve(
+      new Response(JSON.stringify({ message: "Invalid game" }), {
+        status: 404,
+      }),
+    );
   }
   const { chess, white, black } = game;
   const gameState = chess.getStatus();
@@ -79,16 +87,32 @@ function handleMakeMove(
     (gameState.turn === "white" && userName !== white) ||
     (gameState.turn === "black" && userName !== black)
   ) {
-    return Promise.resolve(new Response(JSON.stringify({message: "Not your turn"}), { status: 400 }));
+    return Promise.resolve(
+      new Response(JSON.stringify({ message: "Not your turn" }), {
+        status: 400,
+      }),
+    );
   }
   const result = chess.move(move);
   if (!result) {
-    return Promise.resolve(new Response(JSON.stringify({message:"Invalid move, check the board state and confirm you are making the right move?"}), { status: 400 }));
+    return Promise.resolve(
+      new Response(
+        JSON.stringify({
+          message:
+            "Invalid move, check the board state and confirm you are making the right move?",
+        }),
+        { status: 400 },
+      ),
+    );
   }
   if (message) {
     game.chat.push(`${userName}: ${message}`);
   }
-  return Promise.resolve(new Response(JSON.stringify({message: "Move processed successfully"}), { status: 200 }));
+  return Promise.resolve(
+    new Response(JSON.stringify({ message: "Move processed successfully" }), {
+      status: 200,
+    }),
+  );
 }
 
 function handleGetCurrentTurn(gameId: string): Promise<Response> {
@@ -110,7 +134,14 @@ function handleGetChat(gameId: string): Promise<Response> {
     return Promise.resolve(new Response("Game not found", { status: 404 }));
   }
   const { chat } = game;
-  return Promise.resolve(new Response(JSON.stringify(chat), { status: 200 }));
+  return Promise.resolve(
+    new Response(JSON.stringify(chat), {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    }),
+  );
 }
 
 function handleGetLatestMove(gameId: string): Promise<Response> {
@@ -177,4 +208,3 @@ const handler = async (req: Request) => {
 };
 handleCreateGame("UltimateBattle");
 serve(handler, { port: 8008 });
-
